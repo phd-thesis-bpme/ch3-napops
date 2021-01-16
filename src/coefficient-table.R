@@ -11,7 +11,7 @@ ibp_sp <- read.csv("../utilities/IBP-Alpha-Codes20.csv")$SPEC
 distance <- read.csv("../results/coefficients/distance.csv")
 removal <- read.csv("../results/coefficients/removal.csv")
 
-####### Create Tables #############################
+####### Create Full Tables ########################
 
 # Order both tables taxonomically
 distance_tax <- distance[match(ibp_sp, distance$Species), ]
@@ -24,11 +24,31 @@ removal_tax <- removal_tax[!is.na(removal_tax$Species), ]
 write.table(x = distance_tax[, c("Species", "n", "best_model",
                                  "best_bic", "int_best", "road_best", 
                                  "forest_best", "roadforest_best")],
-            file = "tables/coefficients_best_distance_taxonomic.csv",
+            file = "tables/coefficients_best_distance_taxonomic_all.csv",
             sep = ",", row.names = FALSE)
 
 write.table(x = removal_tax[, c("Species", "n", "best_model",
                                 "best_bic", "int_best", "tssr_best", 
                                 "tssr2_best", "jd_best", "jd2_best")],
-            file = "tables/coefficients_best_removal_taxonomic.csv",
+            file = "tables/coefficients_best_removal_taxonomic_all.csv",
+            sep = ",", row.names = FALSE)
+
+####### Create Reduced Tables #####################
+
+d_indices <- seq(from = 41, to = 328, by = 41)
+d_red <- distance_tax[d_indices,]
+
+r_indices <- seq(from = 39, to = 312, by = 39)
+r_red <- removal_tax[r_indices,]
+
+write.table(x = d_red[, c("Species", "n", "best_model",
+                          "best_bic", "int_best", "road_best", 
+                          "forest_best", "roadforest_best")],
+            file = "tables/coefficients_best_distance_taxonomic_red.csv",
+            sep = ",", row.names = FALSE)
+
+write.table(x = r_red[, c("Species", "n", "best_model",
+                          "best_bic", "int_best", "tssr_best", 
+                          "tssr2_best", "jd_best", "jd2_best")],
+            file = "tables/coefficients_best_removal_taxonomic_red.csv",
             sep = ",", row.names = FALSE)
