@@ -20,11 +20,6 @@ distance_tax <- distance_tax[!is.na(distance_tax$Species), ]
 removal_tax <- removal[match(ibp_sp, removal$Species), ]
 removal_tax <- removal_tax[!is.na(removal_tax$Species), ]
 
-# Get only species that appear in both
-species <- intersect(distance_tax$Species, removal_tax$Species)
-removal_tax <- removal_tax[which(removal_tax$Species %in% species), ]
-distance_tax <- distance_tax[which(distance_tax$Species %in% species), ]
-
 # For the results, we'll just output the "best" model for each species
 write.table(x = distance_tax[, c("Species", "n", "best_model",
                                  "best_bic", "int_best", "road_best", 
