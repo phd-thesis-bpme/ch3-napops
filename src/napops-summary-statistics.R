@@ -99,8 +99,7 @@ summary_stats[["total_projects"]] <- nrow(all_projects)
 rem_sp <- read.csv("../results/coefficients/removal.csv")$Species
 dis_sp <- read.csv("../results/coefficients/distance.csv")$Species
 
-sp <- intersect(rem_sp, dis_sp)
-summary_stats[["species_analyzed"]] <- sp
+sp <- union(rem_sp, dis_sp)
 summary_stats[["n_species"]] <- length(sp)
 
 ####### Number of States/Provinces ################
