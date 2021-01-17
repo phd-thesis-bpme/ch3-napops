@@ -5,19 +5,20 @@
 # Created January 2021
 # Last Updated January 2021
 
+####### Import Libraries and External Files #######
+
+source("../utilities/order-taxo.R")
+source("../utilities/rm-non-sp.R")
+
 ####### Read Data #################################
 
-dis <- read.csv("../results/coefficients/distance.csv")
-rem <- read.csv("../results/coefficients/removal.csv")
 ibp <- read.csv("../utilities/IBP-Alpha-Codes20.csv")
+dis <- rm_non_sp(order_taxo(read.csv("../results/coefficients/distance.csv")))
+rem <- rm_non_sp(order_taxo(read.csv("../results/coefficients/removal.csv")))
 
 ####### Create Table of Species ###################
 
-all_species <- union(rem$Species, dis$Species)
-
-# Taxonomic list of banding codes
-codes <- all_species[match(ibp$SPEC, all_species)]
-codes <- codes[!is.na(codes)]
+codes <- union(rem$Species, dis$Species)
 
 common_name <- ibp[which(ibp$SPEC %in% codes), "COMMONNAME"]
 

@@ -5,10 +5,14 @@
 # Created January 2021
 # Last Updated January 2021
 
+####### Import Libraries and External Files #######
+
+source("../utilities/rm-non-sp.R")
+
 ####### Read Data #################################
 
-distance <- read.csv("../results/coefficients/distance.csv")
-removal <- read.csv("../results/coefficients/removal.csv")
+distance <- rm_non_sp(read.csv("../results/coefficients/distance.csv"))
+removal <- rm_non_sp(read.csv("../results/coefficients/removal.csv"))
 
 ####### Create Table ##############################
 
