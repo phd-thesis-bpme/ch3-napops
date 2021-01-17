@@ -82,6 +82,7 @@ for (rad in radius_values)
                                    sim_data$Radius == rad),]) +
       geom_line(aes(x = Forest, y = q, group = Species), alpha = 0.05) +
       stat_summary(aes(x = Forest, y = q), fun = mean, geom = "smooth", size = 1.25) +
+      ylim(0, 1) +
       theme(legend.position = "none")
     i <- i + 1
   }
