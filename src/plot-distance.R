@@ -79,9 +79,8 @@ for (rad in radius_values)
   {
     plot_list[[i]] <- 
       ggplot(data = sim_data[which(sim_data$Roadside == road & 
-                                   sim_data$Radius == rad &
-                                   sim_data$Model != 1),]) +
-      geom_line(aes(x = Forest, y = q, group = Species), alpha = 0.1) +
+                                   sim_data$Radius == rad),]) +
+      geom_line(aes(x = Forest, y = q, group = Species), alpha = 0.05) +
       stat_summary(aes(x = Forest, y = q), fun = mean, geom = "smooth", size = 1.25) +
       theme(legend.position = "none")
     i <- i + 1
@@ -116,8 +115,7 @@ for (f in sort(unique(sim_data$family)))
   plot_list <- vector(mode = "list", length = length(radius_values) * length(unique(roadside)))
   
   i <- 1
-  n_sp <- length(unique(sim_data[which(sim_data$family == f &
-                                         sim_data$Model != 1), "Species"]))
+  n_sp <- length(unique(sim_data[which(sim_data$family == f), "Species"]))
   for (rad in radius_values)
   {
     for (road in c(1, 0))
@@ -125,9 +123,8 @@ for (f in sort(unique(sim_data$family)))
       plot_list[[i]] <- 
         ggplot(data = sim_data[which(sim_data$Roadside == road & 
                                        sim_data$Radius == rad &
-                                       sim_data$family == f &
-                                       sim_data$Model != 1),]) +
-        geom_line(aes(x = Forest, y = q, group = Species), alpha = 0.1) +
+                                       sim_data$family == f),]) +
+        geom_line(aes(x = Forest, y = q, group = Species), alpha = 0.2) +
         stat_summary(aes(x = Forest, y = q), fun = mean, geom = "smooth", size = 1.25) +
         ylim(0, 1) +
         theme(legend.position = "none")
