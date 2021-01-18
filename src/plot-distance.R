@@ -51,7 +51,7 @@ write.table(x = sim_data, file = "tables/tau_sim.csv", sep = ",", row.names = FA
 
 ####### Simulate q ################################
 
-radius_values <- c(50, 100, 200, 400)
+radius_values <- seq(50, 400, by = 50)
 radius <- rep(radius_values, times = nrow(sim_data))
 
 sim_data <- sim_data[rep(seq_len(nrow(sim_data)),
@@ -68,35 +68,32 @@ sim_data$q <- ifelse(sim_data$Radius == "Inf",
 # Remove SEOW as it seems to be having some...issues
 sim_data <- sim_data[-which(sim_data$Species == "SEOW"), ]
 
-# Empty plot list
-plot_list <- vector(mode = "list", length = length(radius_values) * length(unique(roadside)))
+forest_level <- c(1.0, 0.0)
 
+# Empty plot list
+plot_list <- vector(mode = "list", length = length(forest_level))
 i <- 1
 
-for (rad in radius_values)
+for (fc in c(1.0, 0.0))
 {
-  for (road in c(1, 0))
-  {
-    plot_list[[i]] <- 
-      ggplot(data = sim_data[which(sim_data$Roadside == road & 
-                                   sim_data$Radius == rad),]) +
-      geom_line(aes(x = Forest, y = q, group = Species), alpha = 0.05) +
-      stat_summary(aes(x = Forest, y = q), fun = mean, geom = "smooth", size = 1.25) +
-      ylim(0, 1) +
-      theme(legend.position = "none")
-    i <- i + 1
-  }
+  plot_list[[i]] <- 
+    ggplot(data = sim_data[which(sim_data$Forest == fc),]) +
+    #geom_line(aes(x = Radius, y = q, group = Species, color = as.factor(Roadside)), alpha = 0.05) +
+    stat_summary(aes(x = Radius, y = q, group = as.factor(Roadside), color = as.factor(Roadside)), fun = mean, geom = "smooth", size = 1.25) +
+    ylim(0, 1) +
+    #theme(legend.position = "none") +
+    NULL
+  i <- i + 1  
 }
 
 plot_matrix <- ggmatrix(
   plot_list,
-  ncol = length(unique(roadside)),
-  nrow = length(radius_values),
-  xAxisLabels = c("On-Road Survey", "Off-road Survey"),
-  yAxisLabels = c("50m", "100m", "200m", "400m")
+  ncol = length(forest_level),
+  nrow = 1,
+  xAxisLabels = c("Forest", "Non-forest")
 )
 png(filename = "plots/distance/distance_all_species.png",
-    width = 7, height = 9, units = "in", res = 300)
+    width = 7, height = 4, units = "in", res = 300)
 print(plot_matrix)
 dev.off()
 
@@ -108,32 +105,27 @@ sm <- 1
 for (sp in unique(sim_data$Species))
 {
   # Empty plot list
-  plot_list <- vector(mode = "list", length = length(radius_values) * length(unique(roadside)))
-  
+  plot_list <- vector(mode = "list", length = length(forest_level))
   i <- 1
   
-  for (rad in radius_values)
+  for (fc in c(1.0, 0.0))
   {
-    for (road in c(1, 0))
-    {
-      plot_list[[i]] <- 
-        ggplot(data = sim_data[which(sim_data$Roadside == road & 
-                                       sim_data$Radius == rad &
-                                       sim_data$Species == sp),]) +
-        geom_line(aes(x = Forest, y = q)) +
-        #stat_summary(aes(x = Forest, y = q), fun = mean, geom = "smooth", size = 1.25) +
-        ylim(0, 1) +
-        theme(legend.position = "none")
-      i <- i + 1
-    }
+    plot_list[[i]] <- 
+      ggplot(data = sim_data[which(sim_data$Forest == fc &
+                                     sim_data$Species == sp),]) +
+      geom_line(aes(x = Radius, y = q, color = as.factor(Roadside))) +
+      #stat_summary(aes(x = Radius, y = q, group = as.factor(Roadside), color = as.factor(Roadside)), fun = mean, geom = "smooth", size = 1.25) +
+      ylim(0, 1) +
+      #theme(legend.position = "none") +
+      NULL
+    i <- i + 1  
   }
   
   plot_matrix <- ggmatrix(
     plot_list,
-    ncol = length(unique(roadside)),
-    nrow = length(radius_values),
-    xAxisLabels = c("On-Road Survey", "Off-road Survey"),
-    yAxisLabels = c("50m", "100m", "200m", "400m"),
+    ncol = length(forest_level),
+    nrow = 1,
+    xAxisLabels = c("Forest", "Non-forest"),
     title = paste0("Species: ",
                    sp)
   )
@@ -145,6 +137,30 @@ for (sp in unique(sim_data$Species))
 pdf(file = paste0("plots/distance/distance_species.pdf"))
 print(sm_list)
 dev.off() 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ####### Plot by Family ############################
 
