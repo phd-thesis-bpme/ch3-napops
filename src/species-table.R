@@ -13,8 +13,8 @@ source("../utilities/rm-non-sp.R")
 ####### Read Data #################################
 
 ibp <- read.csv("../utilities/IBP-Alpha-Codes20.csv")
-dis <- rm_non_sp(order_taxo(read.csv("../results/coefficients/distance.csv")))
-rem <- rm_non_sp(order_taxo(read.csv("../results/coefficients/removal.csv")))
+dis <- rm_non_sp(order_taxo(read.csv("data/distance.csv")))
+rem <- rm_non_sp(order_taxo(read.csv("data/removal.csv")))
 
 ####### Create Table of Species ###################
 

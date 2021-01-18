@@ -98,8 +98,8 @@ summary_stats[["total_projects"]] <- nrow(all_projects)
 
 ####### Number of Species #########################
 
-dis_sp <- rm_non_sp(order_taxo(read.csv("../results/coefficients/distance.csv")))$Species
-rem_sp <- rm_non_sp(order_taxo(read.csv("../results/coefficients/removal.csv")))$Species
+dis_sp <- rm_non_sp(order_taxo(read.csv("data/distance.csv")))$Species
+rem_sp <- rm_non_sp(order_taxo(read.csv("data/removal.csv")))$Species
 
 sp <- union(rem_sp, dis_sp)
 summary_stats[["n_species"]] <- length(sp)

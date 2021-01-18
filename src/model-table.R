@@ -11,8 +11,8 @@ source("../utilities/rm-non-sp.R")
 
 ####### Read Data #################################
 
-distance <- rm_non_sp(read.csv("../results/coefficients/distance.csv"))
-removal <- rm_non_sp(read.csv("../results/coefficients/removal.csv"))
+distance <- rm_non_sp(read.csv("data/distance.csv"))
+removal <- rm_non_sp(read.csv("data/removal.csv"))
 
 ####### Create Table ##############################
 

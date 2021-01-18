@@ -17,7 +17,7 @@ source("../utilities/rm-non-sp.R")
 
 ####### Read Data #################################
 
-dis <- rm_non_sp(order_taxo(read.csv("../results/coefficients/distance.csv")))
+dis <- rm_non_sp(order_taxo(read.csv("data/distance.csv")))
 family <- read.csv("../utilities/NACC_list_species.csv")[, c("common_name",
                                                              "family")]
 ibp <- read.csv("../utilities/IBP-Alpha-Codes20.csv")[, c("SPEC",
