@@ -130,6 +130,7 @@ sim_data$q_97.5 <- ifelse(sim_data$Radius == "Inf",
 ####### Plot All Species with Mean ################
 
 forest_level <- c(1.0, 0.0)
+sim_data$SpeciesRoad <- paste0(sim_data$Species, sim_data$Roadside)
 
 # Empty plot list
 plot_list <- vector(mode = "list", length = length(forest_level))
@@ -139,7 +140,7 @@ for (fc in c(1.0, 0.0))
 {
   plot_list[[i]] <- 
     ggplot(data = sim_data[which(sim_data$Forest == fc),]) +
-    #geom_line(aes(x = Radius, y = q, group = Species, color = as.factor(Roadside)), alpha = 0.05) +
+    geom_line(aes(x = Radius, y = q, group = SpeciesRoad, color = as.factor(Roadside)), alpha = 0.05) +
     stat_summary(aes(x = Radius, y = q, group = as.factor(Roadside), color = as.factor(Roadside)), fun = mean, geom = "smooth", size = 1.25) +
     ylim(0, 1) +
     #theme(legend.position = "none") +
