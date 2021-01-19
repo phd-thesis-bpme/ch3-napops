@@ -74,7 +74,7 @@ names(rem_vcv_full) <- rem_species
 
 for (sp in rem_species)
 {
-  best_file <- paste0("data/var-covar/raw/removal",
+  best_file <- paste0("data/var-covar/raw/removal/",
                       sp,
                       "_best.csv")
   full_file <- paste0("data/var-covar/raw/removal/",
