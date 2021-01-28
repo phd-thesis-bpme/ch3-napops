@@ -94,7 +94,7 @@ dev.off()
 ####### Plot by Species (JD) ######################
 
 sm_list <- vector(mode = "list", length = length(unique(sim_data$Species)))
-sm <- 1
+names(sm_list) <- unique(sim_data$Species)
 
 for (sp in unique(sim_data$Species))
 {
@@ -127,18 +127,19 @@ for (sp in unique(sim_data$Species))
                    sp)
   )
   
-  sm_list[[sm]] <- plot_matrix
-  sm <- sm + 1
+  sm_list[[sp]] <- plot_matrix
 }
+
+save(sm_list, file = "plots/removal/removal_jd_plot_list.rda")
 
 pdf(file = paste0("plots/removal/removal_jd_species.pdf"), width = 7, height = 3)
 print(sm_list)
 dev.off() 
 
-####### Plot by Family (TSSR) #####################
+####### Plot by Species (TSSR) ####################
 
 sm_list <- vector(mode = "list", length = length(unique(sim_data$Species)))
-sm <- 1
+names(sm_list) <- unique(sim_data$Species)
 
 for (sp in unique(sim_data$Species))
 {
@@ -171,108 +172,11 @@ for (sp in unique(sim_data$Species))
                    sp)
   )
   
-  sm_list[[sm]] <- plot_matrix
-  sm <- sm + 1
+  sm_list[[sp]] <- plot_matrix
 }
+
+save(sm_list, file = "plots/removal/removal_tssr_plot_list.rda")
 
 pdf(file = paste0("plots/removal/removal_tssr_species.pdf"), width = 7, height = 3)
 print(sm_list)
-dev.off() 
-
-####### Plot by Family (JD) #######################
-
-# Add Family grouping
-family <- merge(x = family, y = ibp,
-                by.x = "common_name", by.y = "COMMONNAME")
-sim_data <- merge(x = sim_data, y = family[, c("SPEC", "family")],
-                  by.x = "Species", by.y = "SPEC")
-
-pm_list <- vector(mode = "list", length = length(unique(sim_data$family)))
-pm <- 1
-
-for (f in sort(unique(sim_data$family)))
-{
-  # Empty plot list
-  plot_list <- vector(mode = "list", length = length(time_values))
-  
-  i <- 1
-  n_sp <- length(unique(sim_data[which(sim_data$family == f), "Species"]))
-  
-  for (tv in time_values)
-  {
-    plot_list[[i]] <- 
-      ggplot(data = sim_data[which(sim_data$TSSR == sr & 
-                                     sim_data$Time == tv &
-                                     sim_data$family == f),]) +
-      geom_line(aes(x = JD, y = p, group = Species), alpha = 0.2) +
-      stat_summary(aes(x = JD, y = p), fun = mean, geom = "smooth", size = 1.25) +
-      ylim(0, 1) +
-      theme(legend.position = "none")
-    i <- i + 1
-  }
-  
-  plot_matrix <- ggmatrix(
-    plot_list,
-    ncol = length(time_values),
-    nrow = 1,
-    xAxisLabels = c("1 min", "3 min", "5 min", "10 min"),
-    title = paste0("Family ",
-                   f,
-                   " (n = ",
-                   n_sp,
-                   ")")
-  )
-  
-  pm_list[[pm]] <- plot_matrix
-  pm <- pm + 1
-}
-
-pdf(file = paste0("plots/removal/removal_jd_families.pdf"), width = 7, height = 3)
-print(pm_list)
-dev.off() 
-
-####### Plot by Family (TSSR) #####################
-
-pm_list <- vector(mode = "list", length = length(unique(sim_data$family)))
-pm <- 1
-
-for (f in sort(unique(sim_data$family)))
-{
-  # Empty plot list
-  plot_list <- vector(mode = "list", length = length(time_values))
-  
-  i <- 1
-  n_sp <- length(unique(sim_data[which(sim_data$family == f), "Species"]))
-  
-  for (tv in time_values)
-  {
-    plot_list[[i]] <- 
-      ggplot(data = sim_data[which(sim_data$JD == day & 
-                                     sim_data$Time == tv &
-                                     sim_data$family == f),]) +
-      geom_line(aes(x = TSSR, y = p, group = Species), alpha = 0.2) +
-      stat_summary(aes(x = TSSR, y = p), fun = mean, geom = "smooth", size = 1.25) +
-      ylim(0, 1) +
-      theme(legend.position = "none")
-    i <- i + 1
-  }
-  
-  plot_matrix <- ggmatrix(
-    plot_list,
-    ncol = length(time_values),
-    nrow = 1,
-    xAxisLabels = c("1 min", "3 min", "5 min", "10 min"),
-    title = paste0("Family ",
-                   f,
-                   " (n = ",
-                   n_sp,
-                   ")")
-  )
-  
-  pm_list[[pm]] <- plot_matrix
-  pm <- pm + 1
-}
-
-pdf(file = paste0("plots/removal/removal_tssr_families.pdf"), width = 7, height = 3)
-print(pm_list)
 dev.off() 
