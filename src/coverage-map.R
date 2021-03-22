@@ -171,6 +171,9 @@ tt_df$nc_cat <- cut(tt_df$ncounts,breaks = c(-1,0,(c(100,200,500,1000,15000))))
 tt_df$sqrt_ncounts <- sqrt(tt_df$ncounts)
 strat2 <- left_join(strat1,tt_df)
 
+# Save this to use for NA-POPS dashboard
+save(strat2, file = "tables/project_coverage.rda")
+
 strat3 <- filter(strat2,ncounts < 100)
 
 ####### Generate Map ##############################
@@ -179,7 +182,7 @@ png("plots/coverage-map.png", width = 6, height = 6, res = 300, units = "in")
 mp = ggplot()+
   geom_sf(data = bcr,fill = viridis::cividis(1,begin = 1),colour = grey(0.75))+
   geom_sf(data = strat2,aes(fill = sqrt_ncounts),colour = NA)+
-  geom_sf(data = strat3,colour = grey(0.75),fill = "white",alpha = 0.01)+
+  #geom_sf(data = strat3,colour = grey(0.75),fill = "white",alpha = 0.01)+
   scale_color_viridis_c(aesthetics = "fill",direction = -1)+
   theme(legend.position = "bottom")
 print(mp)
