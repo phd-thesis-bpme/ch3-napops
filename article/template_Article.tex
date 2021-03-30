@@ -1,0 +1,88 @@
+\documentclass[]{article}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+%opening
+\title{Point Count Offsets for Population Sizes of North American Landbirds}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Bird monitoring in North America over several decades has led to millions of structured and semi-structured bird observations to be freely available in databases. One such survey, the North American Breeding Bird Survey (BBS), has provided the basis for estimates of both trends and population sizes for North American landbirds. However, there are a number of spatial gaps on several levels that exist in the BBS. QPAD is a detectability function that can translate counts of birds from any survey type into estimates of true density, allowing for disparate surveys to be integrated. The integration of multiple data sets can allow this data and spatial gaps to be filled for better estimates of status, trends, and population sizes. NA-POPS was created to curate as many bird count observations as possible in order to generate an open-source database of detectability functions for all North American landbirds. As of this study, NA-POPS has collected over 6 million data points spanning 246 projects from across North America. This has allowed for the generation of detectability functions for 309 species of landbirds so far. Here, we describe the methods used to curate these data and generate these detectability functions, as well as describe the open-access nature of the resulting database.
+\end{abstract}
+
+\section{Introduction}
+Bird monitoring in North America has reached a watershed moment; we now have data from millions of structured and semi-structured bird observations available in open databases, a wide range of complementary data sources on landuse, climate, and human activity, and the statistical methods necessary to integrate all of this information to generate improved estimates of bird population sizes at multiple spatial and temporal scales. For roughly 40 years, conservation scientists have been estimating status and trends using structured monitoring data from individual programs, with the current gold-standard of bird monitoring and status and trend estimation coming from the North American Breeding Bird Survey (BBS; Hudson et al. 2017). Status and trend estimates from the BBS have primarily focused on rates of change in relative abundance (Sauer et al. 2017). Currently, relative abundance estimates are being produced jointly by the United States Geological Survey (USGS) and the Canadian Wildlife Service (CWS) using sophisticated hierarchical Bayesian models that account for many of the sources of variation in the observation and sampling process (Link et al. 2020, Smith and Edwards 2020).
+
+The data from these monitoring programs have also been used to estimate sizes of bird populations. Partners in Flight (PIF) is a working group of over 150 organizations in the Western Hemisphere that pioneered the work in estimating population sizes. The PIF population estimates use BBS data and a series of logical assumptions to extrapolate survey-level counts to total abundance within defined geographic regions (Rosenberg and Blancher 2005). Recent updates also include estimates of uncertainty in the population sizes from PIF (Stanton et al. 2019). More recently, the Boreal Avian Modelling Project (BAM) generated national estimates of density and population size for roughly 150 species of landbirds in Canada (Sólymos et al. 2020). 
+
+The first large-scale attempt to combine estimates of relative abundance (population trends) with population sizes for North American avifauna demonstrated the loss of close to 3 billion birds since the 1970s (Rosenberg et al. 2019). This publication revealed losses in the overall abundance of individual birds in almost all biomes in the continent, and in some of the most common species. This loss in overall abundance only became evident when information on changes in relative abundance was combined with formal estimates of population sizes.
+
+The BBS data have provided the basis for estimates of both trends and population sizes for North American landbirds, but there are known biases in the sampling framework that cannot be filled using the BBS’s roadside field methods (Thogmartin 2010, Solymos et al. 2020, USGS and CWS 2020). As a roadside survey, the BBS has excellent coverage where there are roads, such as the eastern United States, and poor coverage where there are few roads, such as the north (boreal regions of Canada and Alaska), Mexico, and the off-road areas in alpine regions. Possibilities exist to fill these gaps by taking advantage of data available through other existing monitoring programs. For example, the PROALAS program has good coverage in Mexico (Ruiz-Gutierrez et al. 2020), the Integrated Monitoring in Bird Conservation Regions (IMBCR) program collects data from montane and grassland regions in western and central USA (Pavlacky et al. 2017), and eBird data (Sullivan et al. 2014) can be used to fill in gaps throughout the continent. Integrating these data into a single modelling framework could fill spatial gaps and could address limitations and compliment BBS data and analyses (Miller et al. 2019).
+
+\subsection{Density Transformations and QPAD}
+One barrier to data integration, however, is the ability to integrate information across disparate field programs and sampling protocols. For example, the BBS conducts point count surveys for 3 minutes per point at an unlimited radius, all of which are roadside surveys, whereas the IMBCR program conducts point count surveys for 6 minutes per point while recording exact distance, most of which are off-road surveys. Species counts collected by the BBS cannot directly be combined with species counts collected by IMBCR, due to these differences in survey protocol. Thus, there exists the need to develop a way for any survey, using any survey protocol, to be combined into one model.
+
+At any given sampling site, for species $s$, there exists the true species density $D_s$, which represents all the individuals of species $s$ at that site. During any sampling event, the recorded count for species $s$ (i.e., $Y_s$) is a subset of the true denisty $D_s$, such that $Y_s \leq D_s$, assuming birds are correctly identified. The difference between the recorded count and the true density depends on the detectability of the birds. The factors that affect detectability of species $s$, such as survey length, roadside noise, vegetation structure, and time of day, can be accounted for in the latent detectability function $f(\cdot)$:
+\begin{equation}
+	\label{eq-density}
+	Y_s = D_s f(\cdot)
+\end{equation}
+
+The fact that $f(\cdot)$ depends on several factors, including the survey type, is exactly the reason why counts from multiple surveys cannot simply be combined. However, if an estimate of the detectability function $f(\cdot)$ can be obtained, Equation \ref{eq-density} can be rearranged to get an estimate of density. This provides an important opportunity to integrate estimates of density across multiple surveys.
+
+The QPAD method developed by Solymos et al. (2013) is one approach for estimating these detectability functions, and accounts for any number of covariates. It creates detectability functions by combining the following information: the probability $p$ of an individual bird giving a cue during a given time interval $t$ (its availability); the conditional probability $q$ that the cue is perceived by an observer, within a detectable radius $r$ of the observer (its perceptibility); and the area sampled $A$. The detectability function is then
+
+$$
+	f(\cdot) = AP_s(t)q_s(r)
+$$
+
+and the expected count of a species $s$ is given by:
+\begin{equation}
+	\mathbb{E}[Y_s] = D_sAp_s(t)q_s(r).
+\end{equation}
+
+$p_s$ is calculated from surveys that employ a time-of-detection/removal sampling approach (Farnsworth et al. 2002, Alldredge et al. 2007, Sólymos et al. 2013), in which total survey time is partitioned into “time bands” $t_J$, not necessarily of equal size. For example, a 6-minute survey may be partitioned into $J=6$ 1-minute time bands. Or, it could be partitioned into a 1-minute time band, followed by a 3-minute time band, followed by a 2-minute time band, for a total of $J=3$ time bands. If a bird gives a cue and is recorded in time band $j$, then it is “removed” from the available birds to be recorded in all subsequent time bands. Cue rates follow a Poisson process with Poisson parameter $\phi$, which is estimated via multinomial conditional maximum likelihood estimation given survey type and any number of covariates, and the time to first cue event (i.e., detection) follows an exponential distribution $f(t) = \phi \exp{-t\phi}$. Thus, the cumulative time to first detection on the interval $(0,t_J)$ is given by (Alldredge et al. 2007)
+
+\begin{align*}
+	p(t_J) &= \int_{0}^{t_J}\phi \exp{\{-t\phi\}} \\
+	&= 1- \exp{\{-t\phi\}}
+\end{align*}
+
+$q$ is calculated from surveys employing a distance sampling protocol (Buckland et al. 2001, Sólymos et al 2013). Distance sampling partitions the point count survey area into discrete distance bands $r_K$. For example, when considering a 200m point count radius, the area may be partitioned into $K=2$ 100m bands, or $K=4$ 50m bands. Birds are then recorded by the observer as to how far away from the observer the bird was perceived. Solymos et al. (2013) assume a half-normal detection function with probability of detecting an available bird at a distance $r$ from the observer is $g(r) = \exp{\{-\dfrac{r^2}{\tau^2}\}}$, where $\tau^2$ is the variance of the unfolded normal distribution that describes the rate of distance decay and is estimated via multinomial conditional maximum likelihood estimation given survey type and any number of covariates. When used as the variance of the unfolded normal distribution, $tau^2$ is also the bird species' Effective Detection Radius (EDR), which is the distance at which the number of detected birds of that species is equal to the number of undetected birds (CITATION). The probability $q$ that an individual located within radius $r_K$ gives a cue that is perceived by an observer is given by
+
+\begin{equation*}
+	q(r_K) = \dfrac{\pi \tau^2 \left( 1 - \exp{\left\{ -\dfrac{r_K^2}{\tau^2} \right\}} \right)}{\pi r_K^2}
+\end{equation*}
+
+The QPAD function allows for estimates of true density to be derived from any survey, by allowing for an estimate of the latent detectability function $f(\cdot)=Ap_s(t)q_s(r)$. This detectability function acts as a statistical offset to account for differences among survey types and is the key to integrating data from disparate survey protocols. The offsets allow all survey-observed counts to be translated into an estimate of true density.
+
+\subsection{NA-POPS}
+Given the millions of bird observations available for use, as well as the ease-of-access to hundreds of covariate data sets, and the computational and statistical ability to integrate disparate survey types using QPAD, we have created the collaborative project NA-POPS: Point count Offsets for Population Sizes of North American Landbirds. The overarching goal of NA-POPS is to generate an open-source database of detectability functions for all species of landbirds in North America, thus allowing for the quantitative integration of observations from different programs and field protocols (e.g., integrating observations from BBS and eBird). These integrations will allow researchers to fill in spatial gaps in the BBS and will allow for estimates of detectability for observations that otherwise do not allow for its explicit estimation. In turn, this will allow for improved population estimates across a wide geographic range.
+We have created a collection of project-specific databases, standardized to allow integration across all datasets. Each project-specific database also includes a database of covariates used in the QPAD estimation. The data are housed within a GitHub organization with varying levels of privacy that depend on the particular dataset. To allow for researchers to estimate detection functions we fit a series of removal models to estimate the Poisson parameter $\phi$ using combinations of time-since-local sunrise and Julian date (which affect a bird’s propensity to give a cue), and we fit a series of distance models to estimate the effective detection radius $\tau$ using combinations of roadside status and forest coverage (which affects an observer’s ability to detect a bird). The coefficients generated from the models of $\phi$ and $\tau$ are then made freely available for any researcher to access to generate estimates of availability $p$ and perceptibility $q$, given their own bird count data sets.
+
+Here, we detail the methods surrounding the following key components of this achieving this large-scale project: 1) data acquisition and standardization, 2) derivation of covariates to be used to estimate $\phi$ and $\tau$, 3) the modelling of $\phi$ and $\tau$, and 4) the software infrastructure used to curate the data, generate model runs, and host results. We then give a brief example of estimating $p$ and $q$ using the results available from the NA-POPS database.
+
+\section{Methods}
+\subsection{Data Acquisition}
+ We solicited point count data sets from across North America that used either removal modelling, distance sampling, or both. We included all Avian Knowledge Network (AKN) projects with relevant data that are listed as “Level 5” open-access (AKN 2020). Suitable data were also included from the Boreal Avian Modelling project (BAM; Solymos et al. 2020), the Integrated Monitoring in Bird Conservation Regions program (IMBCR; Pavlacky et al. 2017), numerous programs run by the Klamath Bird Observatory (KBO 2020), the Minnesota Breeding Bird Atlas (Pfannmuller et al. 2017), and others. A full list of the projects used here are included in Appendix A.
+ 
+\subsection{Data Standardization}
+Each of the data sets were subject to a first-pass data manipulation and filtration processes prior to being used in calculations. The derived variables described below were then combined into a simplified, standardized data set per project that was then combined with all other projects used in NA-POPS.
+
+\subsubsection{Non-species Removal}
+Each data set was subjected to filtering of non-species. The majority of these non-species are identifications to the genus level or higher (e.g., empid sp., hummingbird sp., etc.). Some instances included removing mammal species such as American red squirrel, pika spp., etc. 
+
+We used the 2020 American Ornithological Society checklist for determining parent species of various splits and lumps (Chesser et al. 2020). Species that were previously lumped and now considered multiple species (e.g. Blue Grouse, which is now Dusky Grouse and Sooty Grouse; Rufous-sided Towhee, which is now Eastern Towhee and Spotted Towhee; etc.) were removed from the analysis as there was not a definitive way to tell which species it was, according to 2020 definitions. Though the range of the species could have been used (for example, Rufous-sided Towhee now split into Eastern Towhee and Spotted Towhee), this would not account for vagrancies. Species that were previously split and are now considered one species, or species that have recognized subspecies (e.g., Audubon’s Warbler and Myrtle Warbler as subspecies of Yellow-rumped Warbler) or forms (e.g., Yellow-shafted/Red-shafted/Intergrade Flicker being forms of Northern Flicker) were lumped into their parent species. Species for which the 4-letter banding code has changed over the years, either due to the species being split (e.g., Canada Goose changing from CAGO to CANG with the introduction of Cackling Goose) or due to the renaming of the species (e.g., Gray Jay [GRAJ] being renamed to Canada Jay [CAJA]) were updated to reflect the banding code as of the 2020 checklist.
+
+\subsubsection{Unique Sample ID}
+To identify a unique point count run (i.e., a survey from project $P$ conducted at location $x$ on day $y$), we generated a unique sample ID for each observation in a point count. This sample ID was a string combination of the project, point count name (provided by the project themselves), date/time in UTC (local time zones and UTC offsets calculated using R packages “lutz” [Teucher 2019] and “proj4” [Urbanek 2020], and UTC assembled using the R packages “lubridate” [Grolemund and Wickham 2011] and “stringr” [Wickham 2019]), latitude, and longitude. This sample ID is used to cross-reference the individual point count in the observations data set to landcover and temporal covariates in their respective data sets.
+
+\subsubsection{Time-of-Detection and Distance Binning}
+
+
+\end{document}
