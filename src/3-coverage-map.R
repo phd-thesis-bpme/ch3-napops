@@ -1,10 +1,9 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# coverage-map.R
+# 3-coverage-map.R
 # Created January 2021
 # Last Updated April 2021
-# Code adapted from https://github.com/AdamCSmithCWS/NAPOPS_coverage
 
 ####### Import Libraries and External Files #######
 
