@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # coefficient-table.R
 # Created January 2021
-# Last Updated January 2021
+# Last Updated April 2021
 
 ####### Import Libraries and External Files #######
 
