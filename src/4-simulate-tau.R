@@ -12,7 +12,7 @@ library(MASS)
 ####### Read Data #################################
 
 dis <- read.csv("output/tables/distance_best_reduced.csv")
-load("results/var-covar/dis_vcv_list.rda")
+load("results-master/var-covar/dis_vcv_list.rda")
 
 ####### Simulate tau ##############################
 

@@ -15,8 +15,8 @@ source("../utilities/rm-non-sp.R")
 
 ####### Read Data #################################
 
-distance <- rm_non_sp(read.csv("results/coefficients/distance.csv"))
-removal <- rm_non_sp(read.csv("results/coefficients/removal.csv"))
+distance <- rm_non_sp(read.csv("results-master/coefficients/distance.csv"))
+removal <- rm_non_sp(read.csv("results-master/coefficients/removal.csv"))
 
 ####### Distance Model Selection ##################
 
@@ -46,7 +46,7 @@ rem_best$Species <- unique(removal$Species)
 for (sp in rem_best$Species)
 {
   temp <- removal[which(removal$Species == sp), ]
-  min_aic <- temp[which(temp$aic == min(temp$aic)), ]
+  min_aic <- temp[which(temp$aic == min(temp$aic, na.rm = TRUE)), ]
   rem_best[which(rem_best$Species == sp), ] <- min_aic
 }
 

@@ -9,7 +9,7 @@
 
 ####### Set Constants #############################
 
-sp_order <- c("AMRO", "YRWA", "SOSP", "REVI",
+sp_order <- c("MODO", "YRWA", "SOSP", "REVI",
               "GHOW", "PIWO", "OSFL", "VESP",
               "LARB", "VATH", "CARW", "SABS",
               "BAIS", "CASP", "GWWA", "BLPH")
