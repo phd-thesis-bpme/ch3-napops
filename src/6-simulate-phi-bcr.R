@@ -185,7 +185,7 @@ for (sp in unique(rem$Species))
   sim_data_list[[sp]] <- sim_data
 }
 
-
+save(sim_data_list, file = "output/tables/phi_sim_bcr_list.rda")
 # 
 # ####### Simulate p ################################
 # 

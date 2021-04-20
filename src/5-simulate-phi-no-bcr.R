@@ -128,17 +128,9 @@ sim_data$phi <- phi
 sim_data$phi_2.5 <- phi_low
 sim_data$phi_97.5 <- phi_high
 
-####### Simulate p ################################
+####### Save Results ############################## 
 
-time_values <- c(1, 3, 5, 10)
-time <- rep(time_values, times = nrow(sim_data))
-
-sim_data <- sim_data[rep(seq_len(nrow(sim_data)),
-                         each = length(time_values)), ]
-sim_data$Time <- time
-sim_data$p <- 1 - exp(-(sim_data$Time * sim_data$phi))
-sim_data$p_2.5 <- 1 - exp(-(sim_data$Time * sim_data$phi_2.5))
-sim_data$p_97.5 <- 1 - exp(-(sim_data$Time * sim_data$phi_97.5))
-
-phi_df <- sim_data
-save(x = phi_df, file = "../results/simulations/phi.rda")
+write.table(x = sim_data,
+            file = "output/tables/phi_sim_no_bcr.csv",
+            sep = ",",
+            row.names = FALSE)
