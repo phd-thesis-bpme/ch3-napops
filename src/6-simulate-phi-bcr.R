@@ -87,7 +87,7 @@ for (sp in unique(rem$Species))
   
   vcv <- rem_vcv_list[[model]][[sp]]
   
-  sim_coef <- rbind(coefficients, MASS::mvrnorm(9999, coefficients, vcv))
+  sim_coef <- rbind(coefficients, MASS::mvrnorm(9999, coefficients, make.positive.definite(vcv)))
   
   # Add columns of zeros back in to where NA coefficients were previously
   # See https://stackoverflow.com/a/1495204/5665609 for explanation
