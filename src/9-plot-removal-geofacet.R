@@ -37,6 +37,8 @@ for (sp in names(sim_data_list))
   sim_data$p_2.5 <- 1 - exp(-(sim_data$Time * sim_data$phi_2.5))
   sim_data$p_97.5 <- 1 - exp(-(sim_data$Time * sim_data$phi_97.5))
   
+  # Plotting by Julian day
+  
   # Hold TSSR (we'll call it sr here) constant at 1
   sr <- 1
   
@@ -52,7 +54,26 @@ for (sp in names(sim_data_list))
   
   png(filename = paste0("output/plots/removal/",
                         sp,
-                        "_geo.png"),
+                        "_jd_geo.png"),
+      width = 16, height = 12, res = 300, units = "in")
+  print(p)
+  dev.off()
+  
+  # Plotting by TSSR
+  # Hold JD constant
+  day <- 152
+  
+  p <- ggplot(data = sim_data[which(sim_data$JD == day), ]) +
+    geom_line(aes(x = TSSR, y = p)) +
+    geom_ribbon(aes(x = TSSR, ymin = p_2.5, ymax = p_97.5),
+                alpha = 0.25) +
+    ylim(0, 1) +
+    theme(legend.position = "none") +
+    facet_geo(~ BCR_name, grid = bcr_grid)
+  
+  png(filename = paste0("output/plots/removal/",
+                        sp,
+                        "_tssr_geo.png"),
       width = 16, height = 12, res = 300, units = "in")
   print(p)
   dev.off()
