@@ -18,7 +18,7 @@ project_list <- load("../results/spatial-summary/project_coverage_bcr.rda")
 
 ####### Generate Map ##############################
 
-png("plots/coverage-map.png", width = 8, height = 6, res = 300, units = "in")
+png("output/plots/coverage-map.png", width = 8, height = 6, res = 300, units = "in")
 mp = ggplot()+
   geom_sf(data = bcr_coverage,fill = viridis::cividis(1,begin = 1),colour = grey(0.75))+
   geom_sf(data = bcr_coverage,aes(fill = ncounts),colour = NA)+
