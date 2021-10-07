@@ -3,36 +3,42 @@
 # NA-POPS: NA-POPS-paper-2021
 # 2-coefficient-table.R
 # Created January 2021
-# Last Updated April 2021
+# Last Updated October 2021
 
 ####### Import Libraries and External Files #######
 
+source("../utilities/rm-non-sp.R")
+
 ####### Set Constants #############################
 
-sp_order <- c("MODO", "YRWA", "SOSP", "REVI",
-              "GHOW", "PIWO", "OSFL", "VESP",
-              "LARB", "VATH", "CARW", "SABS",
-              "BAIS", "CASP", "GWWA", "BLPH")
+sp <- c("AMRO")
 
 ####### Read Data #################################
 
-distance <- read.csv("output/tables/distance_best.csv")
-removal <- read.csv("output/tables/removal_best.csv")
+distance <- rm_non_sp(read.csv("../results/coefficients/distance.csv"))
+removal <- rm_non_sp(read.csv("../results/coefficients/removal.csv"))
 
 ####### Create Subsetted Tables ###################
 
-dis_red <- distance[which(distance$Species %in% sp_order), ]
-dis_red <- dis_red[match(sp_order, dis_red$Species), ]
+dis_red <- distance[which(distance$Species %in% sp), ]
+dis_red <- dis_red[order(dis_red$aic), ]
+dis_red$aic <- dis_red$aic - dis_red$aic[1]
 
-rem_red <- removal[which(removal$Species %in% sp_order), ]
-rem_red <- rem_red[match(sp_order, rem_red$Species), ]
+rem_red <- removal[which(removal$Species %in% sp &
+                           removal$model <= 9), ]
+rem_red <- rem_red[order(rem_red$aic), ]
+rem_red$aic <- rem_red$aic - rem_red$aic[1]
 
 ####### Output Tables #############################
 
 write.table(x = dis_red,
-            file = "output/tables/distance_best_reduced.csv",
+            file = paste0("output/tables/distance_",
+                          sp,
+                          ".csv"),
             sep = ",", row.names = FALSE)
 
 write.table(x = rem_red,
-            file = "output/tables/removal_best_reduced.csv",
+            file = paste0("output/tables/removal_",
+                          sp,
+                          ".csv"),
             sep = ",", row.names = FALSE)
