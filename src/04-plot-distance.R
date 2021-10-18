@@ -48,7 +48,7 @@ for (fc in c(1.0, 0.0))
                 alpha = 0.25, linetype = 0) +
     #stat_summary(aes(x = Radius, y = q, group = as.factor(Roadside), color = as.factor(Roadside)), fun = mean, geom = "smooth", size = 1.25) +
     ylim(0, 1) +
-    scale_color_viridis(discrete=TRUE) +
+    scale_color_viridis(name = "Roadside Status", discrete=TRUE) +
     #theme(legend.position = "none") +
     NULL
   i <- i + 1  
@@ -72,6 +72,3 @@ png(filename = paste0("output/plots/distance/",
     width = 6, height = 4, units = "in", res = 300)
 print(figure)
 dev.off()
-
-
-

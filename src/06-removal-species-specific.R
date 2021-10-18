@@ -41,13 +41,15 @@ for (sp in species)
     labs(fill = "Samples") +
     NULL
   
-  jd_hist <- ggplot(data = rem_species_summary[[sp]]) +
+  to_plot <- rem_species_summary[[sp]]
+  
+  jd_hist <- ggplot(data = to_plot) +
     geom_histogram(bins = 20, aes(x = (JD*365))) +
     xlab("Ordinal Day") +
     ylab("Sampling Events") +
     NULL
   
-  tssr_hist <- ggplot(data = rem_species_summary[[sp]]) +
+  tssr_hist <- ggplot(data = to_plot[which(to_plot$TSSR*24 >= -2), ]) +
     geom_histogram(bins = 20, aes(x = (TSSR*24))) +
     xlab("Time Since Local Sunrise") +
     ylab("Sampling Events") +

@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # 5-plot-removal.R
 # Created January 2021
-# Last Updated April 2021
+# Last Updated October 2021
 
 ####### Import Libraries and External Files #######
 
@@ -124,7 +124,6 @@ png(filename = paste0("output/plots/removal/",
     width = 6, height = 3, units = "in", res = 300)
 print(tssr_figure)
 dev.off()
-mod_index <- mod_index + 1
 
 par(mfrow = c(2,1))
 jd_figure
