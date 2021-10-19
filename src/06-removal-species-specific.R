@@ -43,7 +43,7 @@ for (sp in species)
   
   to_plot <- rem_species_summary[[sp]]
   
-  jd_hist <- ggplot(data = to_plot) +
+  jd_hist <- ggplot(data = to_plot[which(to_plot$JD*365 >= 50), ]) +
     geom_histogram(bins = 20, aes(x = (JD*365))) +
     xlab("Ordinal Day") +
     ylab("Sampling Events") +
