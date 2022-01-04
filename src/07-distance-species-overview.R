@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # 7-distance-species-overview.R
 # Created April 2021
-# Last Updated October 2021
+# Last Updated January 2022
 
 ####### Import Libraries and External Files #######
 
@@ -12,22 +12,19 @@ library(sf)
 library(GGally)
 library(ggpubr)
 library(viridis)
+library(napops)
 theme_set(theme_pubclean())
 
 ####### Set Constants #############################
 
 species <- c("AMRO")
 
-####### Read Data #################################
-
-load("../results/quant-summary/dis_species_summary.rda")
-load("../results/spatial-summary/dis_coverage_bcr.rda")
-
 ####### Generate Species Overview #################
 
 for (sp in species)
 {
-  bcr_coverage <- bcr_dis_coverage[[sp]]
+  bcr_coverage <- get_spatial_coverage(model = "dis",
+                                       species = sp)
   laea = st_crs("+proj=laea +lat_0=45 +lon_0=-95") 
   
   bcr_coverage[which(bcr_coverage$ncounts == 0), "ncounts"] <- NA
@@ -37,30 +34,30 @@ for (sp in species)
     geom_sf(data = bcr_coverage,fill = viridis::cividis(1,begin = 1),colour = grey(0.75))+
     geom_sf(data = bcr_coverage,aes(fill = ncounts),colour = NA)+
     scale_color_viridis_c(aesthetics = "fill",direction = -1, na.value = "grey")+
-    theme(legend.position = c(1, 0.2)) +
+    theme(legend.position = "bottom") +
     labs(fill = "Samples") +
     NULL
   
-  fc_hist <- ggplot(data = dis_species_summary[[sp]]) +
-    geom_histogram(bins = 25, aes(x = ForestOnly_5x5)) +
-    xlab("Forest Coverage") +
-    ylab("Sampling Events") +
-    NULL
+  dis_covars <- get_distance_covariates(project = FALSE,
+                                        species = sp)
   
-  road_hist <- ggplot(data = dis_species_summary[[sp]]) +
-    geom_bar(aes(x = ifelse(roadside == 1, "On-Road", "Off-Road"))) +
-    xlab("Roadside Status") +
-    ylab("Sampling Events") +
+  dis_covars$Roadside <- ifelse(dis_covars$Road == 1, "On-Road", "Off-Road")
+  
+  dis_plot <- ggplot(data = dis_covars, aes(x = Forest, fill = Roadside)) +
+    geom_histogram(position = "identity", alpha = 0.6, bins = 25) +
+    scale_fill_viridis(discrete=TRUE, name = "") +
+    scale_color_viridis(discrete=TRUE) +
+    ylab("Count") +
+    xlab("Forest Coverage") +
+    theme(legend.position="bottom") +
     NULL
   
   png(filename = paste0("output/plots/distance/",
                         sp,
                         "_overview.png"),
-      width = 8, height = 8, units = "in", res = 300)
-  ggarrange(mp, 
-            ggarrange(fc_hist, road_hist, ncol = 2, labels = c("b)", "c)")),
-            nrow = 2,
-            labels = "a)")
+      width = 8, height = 4, units = "in", res = 300)
+  ggarrange(mp, dis_plot, ncol = 2, nrow = 1, labels = c("a)", "b)"))
+
   dev.off()
 }
 

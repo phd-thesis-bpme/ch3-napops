@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # 6-removal-species-overview.R
 # Created April 2021
-# Last Updated October 2021
+# Last Updated January 2022
 
 ####### Import Libraries and External Files #######
 
@@ -12,22 +12,19 @@ library(sf)
 library(GGally)
 library(ggpubr)
 library(viridis)
+library(napops)
 theme_set(theme_pubclean())
 
 ####### Set Constants #############################
 
 species <- c("AMRO")
 
-####### Read Data #################################
-
-load("../results/quant-summary/rem_species_summary.rda")
-load("../results/spatial-summary/rem_coverage_bcr.rda")
-
 ####### Generate Species Overview #################
 
 for (sp in species)
 {
-  bcr_coverage <- bcr_rem_coverage[[sp]]
+  bcr_coverage <- get_spatial_coverage(model = "rem",
+                                       species = sp)
   laea = st_crs("+proj=laea +lat_0=45 +lon_0=-95") 
   
   bcr_coverage[which(bcr_coverage$ncounts == 0), "ncounts"] <- NA
@@ -37,32 +34,25 @@ for (sp in species)
     geom_sf(data = bcr_coverage,fill = viridis::cividis(1,begin = 1),colour = grey(0.75))+
     geom_sf(data = bcr_coverage,aes(fill = ncounts),colour = NA)+
     scale_color_viridis_c(aesthetics = "fill",direction = -1, na.value = "grey")+
-    theme(legend.position = c(1, 0.2)) +
+    theme(legend.position = "bottom") +
     labs(fill = "Samples") +
     NULL
   
-  to_plot <- rem_species_summary[[sp]]
+  to_plot <- get_removal_covariates(project = FALSE,
+                                    species = sp)
   
-  jd_hist <- ggplot(data = to_plot[which(to_plot$JD*365 >= 50), ]) +
-    geom_histogram(bins = 20, aes(x = (JD*365))) +
-    xlab("Ordinal Day") +
-    ylab("Sampling Events") +
-    NULL
-  
-  tssr_hist <- ggplot(data = to_plot[which(to_plot$TSSR*24 >= -2), ]) +
-    geom_histogram(bins = 20, aes(x = (TSSR*24))) +
-    xlab("Time Since Local Sunrise") +
-    ylab("Sampling Events") +
+  rem_plot <- ggplot(to_plot, aes(x = OD, y = TSSR) ) +
+    geom_hex() +
+    scale_fill_continuous(type = "viridis", name = "Count") +
+    theme(legend.position="bottom") +
     NULL
   
   png(filename = paste0("output/plots/removal/",
                         sp,
                         "_overview.png"),
-      width = 8, height = 8, units = "in", res = 300)
-  ggarrange(mp, 
-            ggarrange(jd_hist, tssr_hist, ncol = 2, labels = c("b)", "c)")),
-            nrow = 2,
-            labels = "a)")
+      width = 8, height = 4, units = "in", res = 300)
+  ggarrange(mp, rem_plot, nrow = 1, ncol = 2, labels = c("a)", "b)"))
+
   dev.off()
 }
 
