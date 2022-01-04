@@ -19,8 +19,6 @@ sp_figure <- c("AMRO")
 
 ####### Read Data #################################
 
-####### Read Data #################################
-
 best_mod <- read.csv(paste0("output/tables/distance_",
                             sp_figure,
                             ".csv"))[1,"model"]
@@ -46,10 +44,8 @@ for (fc in c(1.0, 0.0))
     geom_line(aes(x = Radius, y = q, color = as.factor(Roadside_Status))) +
     geom_ribbon(aes(x = Radius, ymin = q_2.5, ymax = q_97.5, color = as.factor(Roadside_Status)),
                 alpha = 0.25, linetype = 0) +
-    #stat_summary(aes(x = Radius, y = q, group = as.factor(Roadside), color = as.factor(Roadside)), fun = mean, geom = "smooth", size = 1.25) +
     ylim(0, 1) +
     scale_color_viridis(name = "Roadside Status", discrete=TRUE) +
-    #theme(legend.position = "none") +
     NULL
   i <- i + 1  
 }
