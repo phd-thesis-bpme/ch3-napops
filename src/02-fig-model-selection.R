@@ -1,9 +1,9 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# 1-model-selection.R
+# 02-fig-model-selection.R
 # Created January 2021
-# Last Updated December 2021
+# Last Updated January 2022
 
 ####### Import Libraries and External Files #######
 
