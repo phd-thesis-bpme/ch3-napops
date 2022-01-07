@@ -44,9 +44,9 @@ od_df$p <- NA
 # Create empty dataframe for p vs TSSR, keeping OD constant
 tssr <- seq(-2, 6)
 tssr_df <- data.frame(Species = rep(df$Species, each = length(tssr)),
-                    Model = rep(df$Model, each = length(tssr)),
-                    Family = rep(df$Family, each = length(tssr)),
-                    TSSR = rep(tssr, times = nrow(df)))
+                      Model = rep(df$Model, each = length(tssr)),
+                      Family = rep(df$Family, each = length(tssr)),
+                      TSSR = rep(tssr, times = nrow(df)))
 tssr_df$p <- NA
 
 for (sp in unique(od_df$Species))
@@ -105,7 +105,7 @@ plot_list_tssr[["All"]] <- ggplot() +
   annotate("text", x = 4, y = 25, size=5, label = label_tssr) + 
   xlim(c(0,8)) +
   theme_void()
-  
+
 plot_list_labels[["All"]] <- ggplot() +
   theme_void()
 
@@ -118,14 +118,20 @@ for (f in families_to_plot)
   ## OD Plots
   od_df_plot <- od_df
   od_df_plot$FamilyActive <- ifelse(od_df_plot$Family == f,
-                               f,
-                               "Other")
+                                    f,
+                                    "Other")
+  
+  od_df_plot$FamilyActive <- ifelse((od_df_plot$Model %in% c(2,3,6,7,8,9) &
+                                       od_df_plot$FamilyActive == f),
+                                    f,
+                                    "Other")
   
   plot_list_od[[f]] <- ggplot() +
-    geom_line(data = od_df_plot[which(od_df_plot$FamilyActive == "Other"), ],
-              aes(x = OD, y = p, group = Species), colour = "#BEBEBE") +
+    geom_line(data = od_df_plot[which(od_df_plot$Family == f & 
+                                        od_df_plot$FamilyActive == "Other"), ],
+              aes(x = OD, y = p, group = Species), colour = "#151515", alpha = 0.5) +
     geom_line(data = od_df_plot[which(od_df_plot$FamilyActive == f), ],
-              aes(x = OD, y = p, group = Species), color = colours[c]) +
+              aes(x = OD, y = p, group = Species), color = "#0072B2", alpha = 0.5) +
     #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
     theme(legend.position = "none") +
     xlab("Ordinal Day") +
@@ -135,14 +141,20 @@ for (f in families_to_plot)
   ## TSSR Plots
   tssr_df_plot <- tssr_df
   tssr_df_plot$FamilyActive <- ifelse(tssr_df_plot$Family == f,
-                                    f,
-                                    "Other")
+                                      f,
+                                      "Other")
+  
+  tssr_df_plot$FamilyActive <- ifelse((tssr_df_plot$Model %in% c(4,5,6,7,8,9) &
+                                         tssr_df_plot$FamilyActive == f),
+                                      f,
+                                      "Other")
   
   plot_list_tssr[[f]] <- ggplot() +
-    geom_line(data = tssr_df_plot[which(tssr_df_plot$FamilyActive == "Other"), ],
-              aes(x = TSSR, y = p, group = Species), colour = "#BEBEBE") +
+    geom_line(data = tssr_df_plot[which(tssr_df_plot$Family == f & 
+                                          tssr_df_plot$FamilyActive == "Other"), ],
+              aes(x = TSSR, y = p, group = Species), colour = "#151515", alpha = 0.5) +
     geom_line(data = tssr_df_plot[which(tssr_df_plot$FamilyActive == f), ],
-              aes(x = TSSR, y = p, group = Species), color = colours[c]) +
+              aes(x = TSSR, y = p, group = Species), color = "#0072B2", alpha = 0.5) +
     #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
     theme(legend.position = "none") +
     xlab("Time Since Sunrise") +
@@ -160,7 +172,7 @@ for (f in families_to_plot)
   c <- c + 1
 }
 
-png(filename = "output/plots/removal/removal_family.png",
+png(filename = "output/plots/removal/removal_family_best_highlighted.png",
     height = 8, width = 8, res = 300, units = "in")
 ggarrange(ggarrange(plotlist = plot_list_od, nrow = length(plot_list_od)),
           ggarrange(plotlist = plot_list_labels, nrow = length(plot_list_labels)),
