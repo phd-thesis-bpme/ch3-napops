@@ -124,6 +124,7 @@ plot_tssr <-
   NULL
 i <- i + 1
 
+####### Output Plot ###############################
 
 png(filename = paste0("output/plots/removal/",
                       sp,
