@@ -21,8 +21,8 @@ source("../utilities/rm-non-sp.R")
 
 ####### Read Data #################################
 
-dis_best <- dis_coef(model = "best")
-rem_best <- rem_coef(model = "best")
+dis_best <- coef_distance(model = "best")
+rem_best <- coef_removal(model = "best")
 ibp_codes <- read.csv("../utilities/IBP-Alpha-Codes20.csv")
 families <- read.csv("../utilities/NACC_list_species.csv")
 
@@ -296,21 +296,28 @@ for (f in unique(species_taxo$family))
 
   
   # Heatmap of model selections
-  plot_list[[f]] <- ggplot(model_table_full, aes(y = Removal, x = Distance, fill = Frequency, label = Frequency)) +
-    geom_tile() +
-    scale_fill_viridis_c(limits = c(0,7), option = "B", direction = -1) +
+  plot_list[[f]] <- ggplot(model_table_full,
+                           aes(x = as.numeric(Removal),
+                               y = as.numeric(Distance), 
+                               fill = as.integer(Frequency), 
+                               label = as.integer(Frequency))) +
+    geom_tile(aes()) +
+    scale_fill_viridis_c(option = "B", direction = -1) +
     geom_fit_text(contrast = TRUE) +
     theme(legend.position = "none") +
-    #theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) +
-    xlab("Distance Model") +
-    ylab("Removal Model") +
+    theme(axis.text.x = element_text(angle = 45, hjust=1)) +
+    ylab("Distance Model") +
+    xlab("Removal Model") +
+    scale_x_continuous(breaks = seq(1,9), labels = rem_model_strings) +
+    scale_y_continuous(breaks = seq(1,5), labels = dis_model_strings) +
     ggtitle(paste0(f,", n = ",
                    length(species)))+ 
-    annotate("text", x = 1:9, y = 6, label = as.character(aggregate(model_table_long$Frequency, 
-                                                                    by = list(Removal = model_table_long$Removal), 
+    coord_fixed() +
+    annotate("text", x = 1:9, y = 6, label = as.character(aggregate(as.integer(model_table_full$Frequency), 
+                                                                    by = list(Removal = model_table_full$Removal), 
                                                                     FUN = sum)$x)) +
-    annotate("text", x = 10, y = 1:5, label = as.character(aggregate(model_table_long$Frequency, 
-                                                                     by = list(Distance = model_table_long$Distance), 
+    annotate("text", x = 10, y = 1:5, label = as.character(aggregate(as.integer(model_table_full$Frequency), 
+                                                                     by = list(Distance = model_table_full$Distance), 
                                                                      FUN = sum)$x)) +
     NULL
 }
