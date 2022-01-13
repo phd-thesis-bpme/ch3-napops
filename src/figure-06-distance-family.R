@@ -53,22 +53,20 @@ for (sp in unique(onroad_df$Species))
   print(sp)
   
   mod <- onroad_df[which(onroad_df$Species == sp), "Model"][1]
-  q_sp <- percept(species = sp,
+  q_sp <- edr(species = sp,
                   model = mod,
                   road = TRUE,
-                  forest = forest,
-                  distance = 100)
+                  forest = forest)
   onroad_df$Forest <- q_sp$Forest
-  onroad_df[which(onroad_df$Species == sp), "q"] <- q_sp$q
+  onroad_df[which(onroad_df$Species == sp), "q"] <- q_sp$EDR_est
   
   mod <- offroad_df[which(offroad_df$Species == sp), "Model"][1]
-  q_sp <- percept(species = sp,
+  q_sp <- edr(species = sp,
                   model = mod,
                   road = FALSE,
-                  forest = forest,
-                  distance = 100)
+                  forest = forest)
   offroad_df$Forest <- q_sp$Forest
-  offroad_df[which(offroad_df$Species == sp), "q"] <- q_sp$q
+  offroad_df[which(offroad_df$Species == sp), "q"] <- q_sp$EDR_est
 }
 
 ####### Generate Plot #############################
@@ -95,13 +93,13 @@ names(plot_list_labels) <- c("All", families_to_plot)
 
 # Generate plots of all
 
-label_road <- "Perceptibility (q) vs. Forest Coverage\nRoadside Survey\nDistance to Bird = 100 m"
+label_road <- "Effective Detection Radius (EDR)\nvs. Forest Coverage\nRoadside Survey\nDistance to Bird = 100 m"
 plot_list_onroad[["All"]] <- ggplot() + 
   annotate("text", x = 4, y = 25, size=5, label = label_road) + 
   xlim(c(0,8)) +
   theme_void()
 
-label_offroad <- "Perceptibility (q) vs. Forest Coverage\nOffroad Survey\nDistance to Bird = 100 m"
+label_offroad <- "Effective Detection Radius (EDR)\nvs. Forest Coverage\nOffroad Survey\nDistance to Bird = 100 m"
 plot_list_offroad[["All"]] <- ggplot() + 
   annotate("text", x = 4, y = 25, size=5, label = label_offroad) + 
   xlim(c(0,8)) +
@@ -116,40 +114,52 @@ c <- 1
 
 for (f in families_to_plot)
 {
-  ## OD Plots
+  ## On Road Plots
   onroad_df_plot <- onroad_df
-  onroad_df_plot <- onroad_df_plot[which(onroad_df_plot$q <= 1), ]
   onroad_df_plot$FamilyActive <- ifelse(onroad_df_plot$Family == f,
                                     f,
                                     "Other")
+  onroad_df_plot$FamilyActive <- ifelse((onroad_df_plot$Model %in% c(2,3,4,5) &
+                                       onroad_df_plot$FamilyActive == f),
+                                    f,
+                                    "Other")
+  
+  onroad_df_plot <- onroad_df_plot[-which(onroad_df_plot$Species == "GIWO"),]
   
   plot_list_onroad[[f]] <- ggplot() +
-    geom_line(data = onroad_df_plot[which(onroad_df_plot$FamilyActive == "Other"), ],
-              aes(x = Forest, y = q, group = Species), colour = "#BEBEBE") +
-    geom_line(data = onroad_df_plot[which(onroad_df_plot$FamilyActive == f), ],
-              aes(x = Forest, y = q, group = Species), color = colours[c]) +
-    #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
+    geom_line(data = onroad_df_plot[which(onroad_df_plot$Family == f & 
+                                        onroad_df_plot$FamilyActive == "Other"), ],
+              aes(x = Forest, y = q, group = Species), colour = "#20A387FF", alpha = 0.75) +
+    geom_line(data = onroad_df_plot[which(onroad_df_plot$Family == f), ],
+              aes(x = Forest, y = q, group = Species), color = "#151515", alpha = 1) +
     theme(legend.position = "none") +
     xlab("Forest Coverage") +
-    ylab("Perceptibility (q)") +
+    ylab("EDR (m)") +
+    ylim(c(0,225)) +
     NULL
   
-  ## TSSR Plots
+  ## Off Road Plots
   offroad_df_plot <- offroad_df
-  offroad_df_plot <- offroad_df_plot[which(offroad_df_plot$q <= 1), ]
   offroad_df_plot$FamilyActive <- ifelse(offroad_df_plot$Family == f,
-                                      f,
-                                      "Other")
+                                        f,
+                                        "Other")
+  offroad_df_plot$FamilyActive <- ifelse((offroad_df_plot$Model %in% c(2,3,4,5) &
+                                           offroad_df_plot$FamilyActive == f),
+                                        f,
+                                        "Other")
+  
+  offroad_df_plot <- offroad_df_plot[-which(offroad_df_plot$Species == "GIWO"),]
   
   plot_list_offroad[[f]] <- ggplot() +
-    geom_line(data = offroad_df_plot[which(offroad_df_plot$FamilyActive == "Other"), ],
-              aes(x = Forest, y = q, group = Species), colour = "#BEBEBE") +
-    geom_line(data = offroad_df_plot[which(offroad_df_plot$FamilyActive == f), ],
-              aes(x = Forest, y = q, group = Species), color = colours[c]) +
-    #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
+    geom_line(data = offroad_df_plot[which(offroad_df_plot$Family == f & 
+                                            offroad_df_plot$FamilyActive == "Other"), ],
+              aes(x = Forest, y = q, group = Species), colour = "#20A387FF", alpha = 0.75) +
+    geom_line(data = offroad_df_plot[which(offroad_df_plot$Family == f), ],
+              aes(x = Forest, y = q, group = Species), color = "#151515", alpha = 1) +
     theme(legend.position = "none") +
     xlab("Forest Coverage") +
-    ylab("Perceptibility (q)") +
+    ylab("EDR (m)") +
+    ylim(c(0,225)) +
     NULL
   
   ## Label Plots
@@ -163,8 +173,8 @@ for (f in families_to_plot)
   c <- c + 1
 }
 
-png(filename = "output/plots/distance/distance_family.png",
-    height = 8, width = 8, res = 300, units = "in")
+png(filename = "output/plots/Fig6-distance-family.png",
+    height = 8, width = 7.5, res = 1200, units = "in")
 ggarrange(ggarrange(plotlist = plot_list_onroad, nrow = length(plot_list_onroad)),
           ggarrange(plotlist = plot_list_labels, nrow = length(plot_list_labels)),
           ggarrange(plotlist = plot_list_offroad, nrow = length(plot_list_offroad)),
