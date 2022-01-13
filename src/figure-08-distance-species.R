@@ -1,7 +1,7 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# 7-distance-species-specific.R
+# figure-08-distance-species.R
 # Created April 2021
 # Last Updated January 2022
 
@@ -32,7 +32,8 @@ mp <- ggplot()+
   geom_sf(data = bcr_coverage,fill = viridis::cividis(1,begin = 1),colour = grey(0.75))+
   geom_sf(data = bcr_coverage,aes(fill = ncounts),colour = NA)+
   scale_color_viridis_c(aesthetics = "fill",direction = -1, na.value = "grey")+
-  theme(legend.position = "bottom") +
+  theme(legend.position = "bottom",
+        legend.text = element_text(angle = 45, vjust = 1, hjust=1)) +
   labs(fill = "Samples") +
   NULL
 
@@ -94,10 +95,8 @@ for (fc in c(1.0, 0.0))
 
 ####### Output Plot ###############################
 
-png(filename = paste0("output/plots/distance/",
-                      sp,
-                      "_overview.png"),
-    width = 8, height = 8, units = "in", res = 300)
+png(filename = "output/plots/Fig8-distance-species.png",
+    width = 7, height = 7, units = "in", res = 600)
 ggarrange(ggarrange(mp, dis_plot, nrow = 2, labels = c("A", "B")),
           ggarrange(plotlist = plot_list, 
                     nrow = 2, legend = "bottom", common.legend = TRUE,
