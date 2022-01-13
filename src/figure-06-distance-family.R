@@ -1,7 +1,7 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# 03-fig-distance-family.R
+# figure-06-distance-family.R
 # Created January 2022
 # Last Updated January 2022
 

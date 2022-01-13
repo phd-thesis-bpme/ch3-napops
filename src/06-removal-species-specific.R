@@ -1,7 +1,7 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# 6-removal-species-overview.R
+# figure-07-removal-species.R
 # Created April 2021
 # Last Updated January 2022
 
@@ -83,7 +83,6 @@ plot_od <-
   xlab("Ordinal Day") +
   ylab("Availability (p)") +
   NULL
-i <- i + 1
 
 ####### Generate p vs TSSR Plot ###################
 
@@ -122,14 +121,11 @@ plot_tssr <-
   xlab("Time Since Sunrise") +
   ylab("Availability (p)") +
   NULL
-i <- i + 1
 
 ####### Output Plot ###############################
 
-png(filename = paste0("output/plots/removal/",
-                      sp,
-                      "_overview.png"),
-    width = 8, height = 8, units = "in", res = 300)
+png(filename = "output/plots/Fig7-removal-species.png",
+    width = 7, height = 7, units = "in", res = 600)
 ggarrange(ggarrange(mp, cov_plot, nrow = 2, labels = c("A", "B")),
           ggarrange(plot_od, plot_tssr, 
                     nrow = 2, legend = "bottom", common.legend = TRUE,

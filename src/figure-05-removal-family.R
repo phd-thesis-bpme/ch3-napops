@@ -1,7 +1,7 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# 03-fig-removal-family.R
+# figure-05-removal-family.R
 # Created January 2022
 # Last Updated January 2022
 
@@ -100,7 +100,7 @@ plot_list_od[["All"]] <- ggplot() +
   xlim(c(0,8)) +
   theme_void()
 
-label_tssr <- "Availability (p) vs. Time Since Sunrise\nOrdinal Day = 160\nSurvey Duration = 5 mins"
+label_tssr <- "Availability (p) vs.\nTime Since Sunrise\nOrdinal Day = 160\nSurvey Duration = 5 mins"
 plot_list_tssr[["All"]] <- ggplot() + 
   annotate("text", x = 4, y = 25, size=5, label = label_tssr) + 
   xlim(c(0,8)) +
@@ -129,9 +129,9 @@ for (f in families_to_plot)
   plot_list_od[[f]] <- ggplot() +
     geom_line(data = od_df_plot[which(od_df_plot$Family == f & 
                                         od_df_plot$FamilyActive == "Other"), ],
-              aes(x = OD, y = p, group = Species), colour = "#151515", alpha = 0.5) +
+              aes(x = OD, y = p, group = Species), colour = "#20A387FF", alpha = 0.75) +
     geom_line(data = od_df_plot[which(od_df_plot$FamilyActive == f), ],
-              aes(x = OD, y = p, group = Species), color = "#0072B2", alpha = 0.5) +
+              aes(x = OD, y = p, group = Species), color = "#151515", alpha = 1) +
     #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
     theme(legend.position = "none") +
     xlab("Ordinal Day") +
@@ -152,9 +152,9 @@ for (f in families_to_plot)
   plot_list_tssr[[f]] <- ggplot() +
     geom_line(data = tssr_df_plot[which(tssr_df_plot$Family == f & 
                                           tssr_df_plot$FamilyActive == "Other"), ],
-              aes(x = TSSR, y = p, group = Species), colour = "#151515", alpha = 0.5) +
+              aes(x = TSSR, y = p, group = Species), colour = "#20A387FF", alpha = 0.75) +
     geom_line(data = tssr_df_plot[which(tssr_df_plot$FamilyActive == f), ],
-              aes(x = TSSR, y = p, group = Species), color = "#0072B2", alpha = 0.5) +
+              aes(x = TSSR, y = p, group = Species), color = "#151515", alpha = 1) +
     #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
     theme(legend.position = "none") +
     xlab("Time Since Sunrise") +
@@ -172,8 +172,8 @@ for (f in families_to_plot)
   c <- c + 1
 }
 
-png(filename = "output/plots/removal/removal_family_best_highlighted.png",
-    height = 8, width = 8, res = 300, units = "in")
+png(filename = "output/plots/Fig5-removal-family.png",
+    height = 8, width = 7.5, res = 1200, units = "in")
 ggarrange(ggarrange(plotlist = plot_list_od, nrow = length(plot_list_od)),
           ggarrange(plotlist = plot_list_labels, nrow = length(plot_list_labels)),
           ggarrange(plotlist = plot_list_tssr, nrow = length(plot_list_tssr)),
