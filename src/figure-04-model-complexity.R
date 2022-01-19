@@ -9,11 +9,7 @@
 
 library(ggplot2)
 library(ggpubr)
-library(ggfittext)
-library(ggExtra)
 library(viridis)
-library(GGally)
-library(magrittr)
 library(napops)
 theme_set(theme_pubclean())
 
