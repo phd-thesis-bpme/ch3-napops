@@ -69,8 +69,7 @@ time_bins <- ggplot(data = rem_covars, aes(x = Max_Time)) +
 
 png("output/plots/Fig2-covariates.png",
     width = 7.5, height = 7.5, units = "in", res = 1200)
-ggarrange(rem_plot, dis_plot, 
-          time_bins, radius_bins,
+ggarrange(rem_plot, time_bins, dis_plot, radius_bins,
           ncol = 2, nrow = 2,
           labels = c("A", "B", "C", "D"))
 dev.off()
