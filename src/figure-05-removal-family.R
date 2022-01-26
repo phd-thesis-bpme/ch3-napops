@@ -117,22 +117,11 @@ for (f in families_to_plot)
 {
   ## OD Plots
   od_df_plot <- od_df
-  od_df_plot$FamilyActive <- ifelse(od_df_plot$Family == f,
-                                    f,
-                                    "Other")
   
-  od_df_plot$FamilyActive <- ifelse((od_df_plot$Model %in% c(2,3,6,7,8,9) &
-                                       od_df_plot$FamilyActive == f),
-                                    f,
-                                    "Other")
-  
-  plot_list_od[[f]] <- ggplot() +
-    geom_line(data = od_df_plot[which(od_df_plot$Family == f & 
-                                        od_df_plot$FamilyActive == "Other"), ],
-              aes(x = OD, y = p, group = Species), colour = "#20A387FF", alpha = 0.75) +
-    geom_line(data = od_df_plot[which(od_df_plot$FamilyActive == f), ],
-              aes(x = OD, y = p, group = Species), color = "#151515", alpha = 1) +
-    #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
+  plot_list_od[[f]] <- ggplot(data = od_df_plot[which(od_df_plot$Family == f), ],
+                              aes(x = OD, y = p, group = Species)) +
+    geom_line(colour = "#bebebe", alpha = 1) +
+    stat_summary(fun.y=mean, aes(group = 1), geom="line", colour="black", size = 1.5) +
     theme(legend.position = "none") +
     xlab("Ordinal Day") +
     ylab("Availability (p)") +
@@ -140,22 +129,11 @@ for (f in families_to_plot)
   
   ## TSSR Plots
   tssr_df_plot <- tssr_df
-  tssr_df_plot$FamilyActive <- ifelse(tssr_df_plot$Family == f,
-                                      f,
-                                      "Other")
   
-  tssr_df_plot$FamilyActive <- ifelse((tssr_df_plot$Model %in% c(4,5,6,7,8,9) &
-                                         tssr_df_plot$FamilyActive == f),
-                                      f,
-                                      "Other")
-  
-  plot_list_tssr[[f]] <- ggplot() +
-    geom_line(data = tssr_df_plot[which(tssr_df_plot$Family == f & 
-                                          tssr_df_plot$FamilyActive == "Other"), ],
-              aes(x = TSSR, y = p, group = Species), colour = "#20A387FF", alpha = 0.75) +
-    geom_line(data = tssr_df_plot[which(tssr_df_plot$FamilyActive == f), ],
-              aes(x = TSSR, y = p, group = Species), color = "#151515", alpha = 1) +
-    #scale_color_manual(values = c("#BEBEBE", "#482677FF")) +
+  plot_list_tssr[[f]] <- ggplot(data = tssr_df_plot[which(tssr_df_plot$Family == f), ],
+                                aes(x = TSSR, y = p, group = Species)) +
+    geom_line(colour = "#bebebe", alpha = 1) +
+    stat_summary(fun.y=mean, aes(group = 1), geom="line", colour="black", size = 1.5) +
     theme(legend.position = "none") +
     xlab("Time Since Sunrise") +
     ylab("Availability (p)") +
