@@ -1,7 +1,7 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# figure-07-removal-species.R
+# figure-08-removal-species.R
 # Created April 2021
 # Last Updated January 2022
 
@@ -124,7 +124,7 @@ plot_tssr <-
 
 ####### Output Plot ###############################
 
-png(filename = "output/plots/Fig7-removal-species.png",
+png(filename = "output/plots/Fig8-removal-species.png",
     width = 7, height = 7, units = "in", res = 600)
 ggarrange(ggarrange(mp, cov_plot, nrow = 2, labels = c("A", "B")),
           ggarrange(plot_od, plot_tssr, 

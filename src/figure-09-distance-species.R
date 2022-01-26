@@ -1,7 +1,7 @@
 ####### Script Information ########################
 # Brandon P.M. Edwards
 # NA-POPS: NA-POPS-paper-2021
-# figure-08-distance-species.R
+# figure-09-distance-species.R
 # Created April 2021
 # Last Updated January 2022
 
@@ -95,7 +95,7 @@ for (fc in c(1.0, 0.0))
 
 ####### Output Plot ###############################
 
-png(filename = "output/plots/Fig8-distance-species.png",
+png(filename = "output/plots/Fig9-distance-species.png",
     width = 7, height = 7, units = "in", res = 600)
 ggarrange(ggarrange(mp, dis_plot, nrow = 2, labels = c("A", "B")),
           ggarrange(plotlist = plot_list, 
