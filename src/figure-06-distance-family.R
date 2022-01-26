@@ -93,13 +93,13 @@ names(plot_list_labels) <- c("All", families_to_plot)
 
 # Generate plots of all
 
-label_road <- "Effective Detection Radius (EDR)\nvs. Forest Coverage\nRoadside Survey\nDistance to Bird = 100 m"
+label_road <- "Effective Detection Radius (EDR)\nvs. Forest Coverage\nRoadside Survey"
 plot_list_onroad[["All"]] <- ggplot() + 
   annotate("text", x = 4, y = 25, size=5, label = label_road) + 
   xlim(c(0,8)) +
   theme_void()
 
-label_offroad <- "Effective Detection Radius (EDR)\nvs. Forest Coverage\nOffroad Survey\nDistance to Bird = 100 m"
+label_offroad <- "Effective Detection Radius (EDR)\nvs. Forest Coverage\nOffroad Survey"
 plot_list_offroad[["All"]] <- ggplot() + 
   annotate("text", x = 4, y = 25, size=5, label = label_offroad) + 
   xlim(c(0,8)) +
@@ -129,9 +129,12 @@ for (f in families_to_plot)
   plot_list_onroad[[f]] <- ggplot() +
     geom_line(data = onroad_df_plot[which(onroad_df_plot$Family == f & 
                                         onroad_df_plot$FamilyActive == "Other"), ],
-              aes(x = Forest, y = q, group = Species), colour = "#20A387FF", alpha = 0.75) +
+              aes(x = Forest, y = q, group = Species), colour = "#bebebe", alpha = 0.75) +
     geom_line(data = onroad_df_plot[which(onroad_df_plot$Family == f), ],
-              aes(x = Forest, y = q, group = Species), color = "#151515", alpha = 1) +
+              aes(x = Forest, y = q, group = Species), color = "#bebebe", alpha = 1) +
+    stat_summary(data = onroad_df_plot[which(onroad_df_plot$Family == f), ],
+                 fun.y=mean,
+                 aes(x = Forest, y = q, group=1), geom="line", colour="blue", size = 2) +
     theme(legend.position = "none") +
     xlab("Forest Coverage") +
     ylab("EDR (m)") +
@@ -153,9 +156,12 @@ for (f in families_to_plot)
   plot_list_offroad[[f]] <- ggplot() +
     geom_line(data = offroad_df_plot[which(offroad_df_plot$Family == f & 
                                             offroad_df_plot$FamilyActive == "Other"), ],
-              aes(x = Forest, y = q, group = Species), colour = "#20A387FF", alpha = 0.75) +
+              aes(x = Forest, y = q, group = Species), colour = "#bebebe", alpha = 0.75) +
     geom_line(data = offroad_df_plot[which(offroad_df_plot$Family == f), ],
-              aes(x = Forest, y = q, group = Species), color = "#151515", alpha = 1) +
+              aes(x = Forest, y = q, group = Species), color = "#bebebe", alpha = 1) +
+    stat_summary(data = offroad_df_plot[which(offroad_df_plot$Family == f), ],
+                 fun.y=mean,
+                 aes(x = Forest, y = q, group=1), geom="line", colour="blue", size = 2) +
     theme(legend.position = "none") +
     xlab("Forest Coverage") +
     ylab("EDR (m)") +
