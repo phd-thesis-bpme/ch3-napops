@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # figure-04-model-complexity.R
 # Created January 2022
-# Last Updated January 2022
+# Last Updated February 2022
 
 ####### Import Libraries and External Files #######
 
@@ -25,11 +25,11 @@ families <- read.csv("../utilities/NACC_list_species.csv")
 ####### Boxplot Distance Models by Sample Size ####
 
 dis_models <- dis_best[, c("Species", "N", "Model")]
-dis_models$Complexity <- ifelse(dis_models$Model == 1, "Low", "Medium")
+dis_models$Complexity <- ifelse(dis_models$Model == 1, "Null Model", "1 Covariate")
 dis_models[which(dis_models$Model >= 4),
-           "Complexity"] <- "High"
+           "Complexity"] <- "2+ Covariates"
 dis_models$Complexity <- factor(dis_models$Complexity,
-                                levels = c("Low", "Medium", "High"))
+                                levels = c("Null Model", "1 Covariate", "2+ Covariates"))
 
 dis_box <- ggplot(data = dis_models) + 
   geom_boxplot(aes(x = Complexity, y = N)) +
@@ -40,11 +40,11 @@ dis_box <- ggplot(data = dis_models) +
 ####### Boxplot Removal Models by Sample Size #####
 
 rem_models <- rem_best[, c("Species", "N", "Model")]
-rem_models$Complexity <- ifelse(rem_models$Model < 7, "Medium", "High")
-rem_models[which(rem_models$Model <= 3),
-           "Complexity"] <- "Low"
+rem_models$Complexity <- ifelse(rem_models$Model == 1, "Null Model", "1 Covariate")
+rem_models[which(rem_models$Model %in% c(3,5:9)),
+           "Complexity"] <- "2+ Covariates"
 rem_models$Complexity <- factor(rem_models$Complexity,
-                                levels = c("Low", "Medium", "High"))
+                                levels = c("Null Model", "1 Covariate", "2+ Covariates"))
 
 rem_box <- ggplot(data = rem_models) + 
   geom_boxplot(aes(x = Complexity, y = N)) +
@@ -65,9 +65,9 @@ combined <- rbind(combined,
 combined$Model <- factor(combined$Model, levels = c("Removal", "Distance"))
 
 combined_box <- ggplot(data = combined) + 
-  geom_boxplot(aes(x = Complexity, y = n, fill = Model)) +
+  geom_boxplot(aes(x = Complexity, y = sqrt(n), fill = Model)) +
   xlab("Model Complexity") +
-  ylab("Sample Size") +
+  ylab("SQRT(Sample Size)") +
   scale_fill_viridis(discrete=TRUE) +
   NULL
 
