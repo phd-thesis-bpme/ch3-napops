@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # supplemental-tables.R
 # Created January 2022
-# Last Updated January 2022
+# Last Updated November 2022
 
 ####### Import Libraries and External Files #######
 
@@ -38,11 +38,13 @@ write.table(sp_output[, c("Code", "Common_Name", "Scientific_Name", "Notes")],
 ####### Removal Coefficients ######################
 
 rem_coef <- coef_removal(model = "best")
+rem_coef[, c(5:9)] <- round(rem_coef[, c(5:9)], digits = 2)
 write.table(rem_coef[, -4],
             file = "output/tables/S3-removal.csv", sep = ",", row.names = FALSE)
 
 ####### Distance Coefficients ######################
 
 dis_coef <- coef_distance(model = "best")
+dis_coef[, c(5:8)] <- round(dis_coef[, c(5:8)], digits = 2)
 write.table(dis_coef[, -4],
             file = "output/tables/S4-distance.csv", sep = ",", row.names = FALSE)

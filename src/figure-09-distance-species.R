@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # figure-09-distance-species.R
 # Created April 2021
-# Last Updated January 2022
+# Last Updated November 2022
 
 ####### Import Libraries and External Files #######
 
@@ -38,8 +38,7 @@ mp <- ggplot()+
   NULL
 
 ####### Generate Covariate Space ##################
-to_plot <- covariates_distance(project = FALSE,
-                              species = sp)
+to_plot <- covariates_distance(species = sp)
 to_plot$Roadside_Status <- ifelse(to_plot$Road == 1, "On-Road", "Off-road")
 
 dis_plot <- ggplot(data = to_plot, aes(x = Forest, fill = as.factor(Roadside_Status))) +

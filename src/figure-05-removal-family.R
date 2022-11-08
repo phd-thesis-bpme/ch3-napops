@@ -135,7 +135,7 @@ for (f in families_to_plot)
     geom_line(colour = "#bebebe", alpha = 1) +
     stat_summary(fun.y=mean, aes(group = 1), geom="line", colour="black", size = 1.5) +
     theme(legend.position = "none") +
-    xlab("Time Since Sunrise") +
+    xlab("Time Since Sunrise (Hours)") +
     ylab("Availability (p)") +
     NULL
   

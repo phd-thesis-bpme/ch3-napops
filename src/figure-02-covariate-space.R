@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # figure-02-covariate-space.R
 # Created January 2022
-# Last Updated January 2022
+# Last Updated November 2022
 
 ####### Import Libraries and External Files #######
 
@@ -17,8 +17,8 @@ theme_set(theme_pubclean())
 
 ####### Read Data #################################
 
-rem_covars <- covariates_removal()
-dis_covars <- covariates_distance()
+rem_covars <- covariates_removal(all = TRUE)
+dis_covars <- covariates_distance(all = TRUE)
 
 ####### Generate Removal Covariate Space ##########
 
@@ -26,6 +26,8 @@ rem_plot <- ggplot(rem_covars, aes(x = OD, y = TSSR) ) +
   geom_hex() +
   scale_fill_continuous(type = "viridis", name = "Count", direction = -1) +
   theme(legend.position="bottom") +
+  xlab("Ordinal Day") + 
+  ylab("Time Since Sunrise (Hours)") +
   NULL
 
 ####### Generate Distance Covariate Space ##########

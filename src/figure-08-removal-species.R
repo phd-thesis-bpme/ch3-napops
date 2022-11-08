@@ -3,7 +3,7 @@
 # NA-POPS: NA-POPS-paper-2021
 # figure-08-removal-species.R
 # Created April 2021
-# Last Updated January 2022
+# Last Updated November 2022
 
 ####### Import Libraries and External Files #######
 
@@ -37,13 +37,14 @@ mp <- ggplot()+
   NULL
   
 ####### Generate Covariate Space ##################
-to_plot <- covariates_removal(project = FALSE,
-                                  species = sp)
+to_plot <- covariates_removal(species = sp)
 
 cov_plot <- ggplot(to_plot, aes(x = OD, y = TSSR) ) +
   geom_hex() +
   scale_fill_continuous(type = "viridis", name = "Count", direction = -1) +
   theme(legend.position="bottom") +
+  xlab("OD") +
+  ylab("TSSR (Hours)") +
   NULL
 
 ####### Generate p vs OD Plot #####################
@@ -118,7 +119,7 @@ plot_tssr <-
   ylim(0, 1) +
   theme(legend.position = "right") +
   scale_color_manual(values = c("#CC79A7", "#D55E00", "#0072B2", "#009E73"), name = "Survey Duration") +
-  xlab("Time Since Sunrise") +
+  xlab("Time Since Sunrise (Hours)") +
   ylab("Availability (p)") +
   NULL
 
