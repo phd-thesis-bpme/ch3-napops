@@ -17,14 +17,14 @@ library(magrittr)
 library(napops)
 theme_set(theme_pubclean())
 
-source("../utilities/rm-non-sp.R")
+source("src/rm-non-sp.R")
 
 ####### Read Data #################################
 
 dis_best <- coef_distance(model = "best")
 rem_best <- coef_removal(model = "best")
-ibp_codes <- read.csv("../utilities/IBP-Alpha-Codes20.csv")
-families <- read.csv("../utilities/NACC_list_species.csv")
+ibp_codes <- read.csv("data/IBP-Alpha-Codes20.csv")
+families <- read.csv("data/NACC_list_species.csv")
 
 ####### Create Table and Heatmaps (ALL) ###########
 

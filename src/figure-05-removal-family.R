@@ -16,8 +16,8 @@ theme_set(theme_pubclean())
 ####### Read Data #################################
 
 rem_sp <- coef_removal(model = "best")
-ibp_codes <- read.csv("../utilities/IBP-Alpha-Codes20.csv")
-families <- read.csv("../utilities/NACC_list_species.csv")
+ibp_codes <- read.csv("data/IBP-Alpha-Codes20.csv")
+families <- read.csv("data/NACC_list_species.csv")
 
 ####### Generate Data #############################
 
