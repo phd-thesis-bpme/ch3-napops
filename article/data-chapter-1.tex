@@ -189,14 +189,16 @@ The full suite of results is visualized on the NA-POPS dashboard at https://na-p
 \par For removal modelling, the most parsimonious model for American Robin ($n_{removal} = 72620$) was Model 9, which contained linear and quadratic terms for TSSR and OD (Table \ref{table:ch1-rem}). In the current version of the NA-POPS database, there are at least some removal data from much of this species’ range, but also a strong spatial bias where most data are from the west and relatively few data cover the core of the species’ range in the East (\autoref{fig:ch1-removal-species}). The removal data for American Robin were much more balanced across the relevant parameter space, covering the standard seasons and times of day for point counts. The species’ relative availability is at a peak in late June (approximately OD 180) and 0.5 hours before sunrise, and its absolute availability is very high (almost 1.0) within a 10-minute point count conducted at the peak time of day and season.
 
 \begin{table}
-	\caption{Coefficients for all 9 removal models for American Robin (Turdus migratorius, n = 72620), ranked by difference in AIC from the top model. See Supplemental Table S5 for removal coefficients for all species modelled in NA-POPS.}
+	\caption{Coefficients for all 9 removal models for American Robin (Turdus migratorius, n = 72620), ranked by difference in AIC from the top model. See Supplemental Table \ref{table:removal-coef} for removal coefficients for all species modelled in NA-POPS.}
 \label{table:ch1-rem}
 	\centering
 	\begin{tblr}{
 			width = \linewidth,
 			colspec = {Q[129]Q[179]Q[177]Q[106]Q[125]Q[94]Q[106]},
 		}
+		\hline
 		Model~ & Delta AIC~ & Intercept~ & TSSR~  & TSSR2~ & OD~   & OD2~   \\
+		\hline
 		9~     & 0~         & -1.36~     & -1.42~ & 11.68~ & 1.49~ & -8.36~ \\
 		8~     & 29.76~     & -1.38~     & -1.47~ & 12.24~ & 1.47~ & ~      \\
 		7~     & 52.13~     & -1.32~     & -1.15~ & ~      & 1.48~ & -8.71~ \\
@@ -219,14 +221,16 @@ The full suite of results is visualized on the NA-POPS dashboard at https://na-p
 
 % \usepackage{tabularray}
 \begin{table}
-	\caption{Coefficients for all 5 distance models for American Robin (Turdus migratorius, n = 98775), ranked by difference in AIC from the top model. See Supplemental Table S6 for distance coefficients for all species modelled in NA-POPS.}
+	\caption{Coefficients for all 5 distance models for American Robin (Turdus migratorius, n = 98775), ranked by difference in AIC from the top model. See Supplemental Table \ref{table:distance-coef} for distance coefficients for all species modelled in NA-POPS.}
 \label{table:ch1-dis}
 	\centering
 	\begin{tblr}{
 			width = \linewidth,
 			colspec = {Q[127]Q[181]Q[173]Q[108]Q[125]Q[208]},
 		}
+		\hline
 		Model~ & Delta\_AIC~ & Intercept~ & Road~  & Forest~ & RoadForest~ \\
+		\hline
 		5~     & 0~          & 4.63~      & -0.04~ & -0.19~  & -0.02~      \\
 		4~     & 2.13~       & 4.63~      & -0.05~ & -0.19~  & ~           \\
 		3~     & 191.55~     & 4.61~      & ~      & -0.18~  & ~           \\
